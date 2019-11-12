@@ -101,7 +101,7 @@ RCT_EXPORT_METHOD(createResizedImage:(NSString *)path
                   height:(float)height
                   format:(NSString *)format
                   quality:(float)quality
-                  ar:(boolean)ar
+                  ar:(bool)ar
                   rotation:(float)rotation
                   outputPath:(NSString *)outputPath
                   callback:(RCTResponseSenderBlock)callback)
@@ -147,7 +147,7 @@ RCT_EXPORT_METHOD(createResizedImage:(NSString *)path
         }
 
         // Do the resizing
-        UIImage * scaledImage = [image scaleToSize:newSize];
+        UIImage * scaledImage = scaleToSize(image, newSize, ar);
         if (scaledImage == nil) {
             callback(@[@"Can't resize the image.", @""]);
             return;
