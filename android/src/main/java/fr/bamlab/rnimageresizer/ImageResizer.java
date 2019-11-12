@@ -46,7 +46,7 @@ public class ImageResizer {
             int finalWidth = (int) (width * ratio);
             int finalHeight = (int) (height * ratio);
             try {
-                newImage = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
+                newImage = Bitmap.createScaledBitmap(image, maxWidth, maxHeight, true);
             } catch (OutOfMemoryError e) {
                 return null;
             }
