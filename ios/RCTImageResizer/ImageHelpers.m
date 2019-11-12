@@ -89,8 +89,7 @@ CGContextRef CreateCGBitmapContextForWidthAndHeight( unsigned int width, unsigne
     return CGBitmapContextCreate( NULL, width, height, 8, 0, colorSpace, alphaInfo );
 }
 
-CGImageRef CreateCGImageFromUIImageScaled( UIImage* image, float scaleFactor, unsigned int nwidth,
-unsigned int nheight,)
+CGImageRef CreateCGImageFromUIImageScaled( UIImage* image, float scaleFactor , bool ar, CGSize toSize)
 {
     CGImageRef			newImage		= NULL;
     CGContextRef		bmContext		= NULL;
@@ -100,8 +99,8 @@ unsigned int nheight,)
 
     CGImageRef			srcCGImage		= CGImageRetain( image.CGImage );
 
-    size_t width	= nwidth;
-    size_t height	= nheight;
+    size_t width	= ar ? CGImageGetWidth(srcCGImage) * scaleFactor : toSize.width;
+    size_t height	= ar ? CGImageGetHeight(srcCGImage) * scaleFactor : toSize.height;
 
     // These Orientations are rotated 0 or 180 degrees, so they retain the width/height of the image
     if( (orientation == UIImageOrientationUp) || (orientation == UIImageOrientationDown) || (orientation == UIImageOrientationUpMirrored) || (orientation == UIImageOrientationDownMirrored)  )
@@ -161,13 +160,12 @@ unsigned int nheight,)
     return newImage;
 }
 
-@implementation UIImage (scale)
 
--(UIImage*) scaleToSize:(CGSize)toSize
+UIImage* scaleToSize(UIImage* inImage, CGSize toSize, bool ar)
 {
     UIImage	*scaledImg	= nil;
-    float	scale		= GetScaleForProportionalResize( self.size, toSize, false, false );
-    CGImageRef cgImage	= CreateCGImageFromUIImageScaled( self, scale, toSize.width, toSize.height);
+    float	scale		= GetScaleForProportionalResize( inImage.size, toSize, false, false );
+    CGImageRef cgImage	= CreateCGImageFromUIImageScaled( inImage, scale, ar, toSize);
 
     if( cgImage )
     {
@@ -177,4 +175,3 @@ unsigned int nheight,)
     return scaledImg;
 }
 
-@end
