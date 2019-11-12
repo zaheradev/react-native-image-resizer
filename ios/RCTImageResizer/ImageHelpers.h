@@ -50,8 +50,6 @@ extern const CGBitmapInfo kDefaultCGBitmapInfoNoAlpha;
 float			GetScaleForProportionalResize( CGSize theSize, CGSize intoSize, bool onlyScaleDown, bool maximize );
 CGContextRef	CreateCGBitmapContextForWidthAndHeight( unsigned int width, unsigned int height, CGColorSpaceRef optionalColorSpace, CGBitmapInfo optionalInfo );
 
-CGImageRef		CreateCGImageFromUIImageScaled( UIImage* inImage, float scaleFactor );
+CGImageRef		CreateCGImageFromUIImageScaled( UIImage* inImage, float scaleFactor, bool ar, CGSize toSize);
 
-@interface UIImage (scale)
--(UIImage*)scaleToSize:(CGSize)toSize;
-@end
+UIImage* scaleToSize(UIImage* inImage, CGSize size, bool ar);
