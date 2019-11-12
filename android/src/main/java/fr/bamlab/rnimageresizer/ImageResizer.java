@@ -31,7 +31,7 @@ public class ImageResizer {
     /**
      * Resize the specified bitmap, keeping its aspect ratio.
      */
-    private static Bitmap resizeImage(Bitmap image, int maxWidth, int maxHeight) {
+    private static Bitmap resizeImage(Bitmap image, int maxWidth, int maxHeight, boolean ar) {
         Bitmap newImage = null;
         if (image == null) {
             return null; // Can't load the image from the given path.
@@ -43,10 +43,10 @@ public class ImageResizer {
 
             float ratio = Math.min((float)maxWidth / width, (float)maxHeight / height);
 
-            int finalWidth = (int) (width * ratio);
-            int finalHeight = (int) (height * ratio);
+            int finalWidth = ar ? (int) (width * ratio) : maxWidth;
+            int finalHeight = ar ? (int) (height * ratio) : maxHeight;
             try {
-                newImage = Bitmap.createScaledBitmap(image, maxWidth, maxHeight, true);
+                newImage = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
             } catch (OutOfMemoryError e) {
                 return null;
             }
@@ -269,7 +269,7 @@ public class ImageResizer {
      * by using recycle
      */
     public static Bitmap createResizedImage(Context context, Uri imageUri, int newWidth,
-                                            int newHeight, int quality, int rotation) throws IOException  {
+                                            int newHeight, int quality, boolean ar, int rotation) throws IOException  {
         Bitmap sourceImage = null;
         String imageUriScheme = imageUri.getScheme();
 
@@ -301,7 +301,7 @@ public class ImageResizer {
         }
 
         // Scale image
-        Bitmap scaledImage = ImageResizer.resizeImage(rotatedImage, newWidth, newHeight);
+        Bitmap scaledImage = ImageResizer.resizeImage(rotatedImage, newWidth, newHeight, ar);
 
         if(scaledImage == null){
             throw new IOException("Unable to resize image. Most likely due to not enough memory.");
