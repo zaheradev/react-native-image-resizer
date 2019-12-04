@@ -101,7 +101,7 @@ RCT_EXPORT_METHOD(createResizedImage:(NSString *)path
                   height:(float)height
                   format:(NSString *)format
                   quality:(float)quality
-                  ar:(bool)ar
+                  ar:(BOOL)ar
                   rotation:(float)rotation
                   outputPath:(NSString *)outputPath
                   callback:(RCTResponseSenderBlock)callback)
